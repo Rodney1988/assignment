@@ -3,13 +3,13 @@ import { ApiResponse } from '../types';
 import { fetchAllItems } from '../api/itemsThunk';
 
 interface ItemsState {
-  ItemsData: ApiResponse;
+  itemsData: ApiResponse | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: ItemsState = {
-  ItemsData: {},
+  itemsData: null,
   loading: false,
   error: null,
 };
@@ -27,11 +27,11 @@ const itemsSlice = createSlice({
       })
       .addCase(fetchAllItems.fulfilled, (state, action) => {
         state.loading = false;
-        state.ItemsData = action.payload;
+        state.itemsData = action.payload;
       })
       .addCase(fetchAllItems.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'An error occurred';
+        state.error = action.payload?.error || 'An error occurred';
       });
   },
 });
