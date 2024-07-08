@@ -1,21 +1,27 @@
 import { useDispatch } from 'react-redux';
-import { RootState } from '../../../store/store';
-import { addItem } from '../../../store/itemSlice';
-
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+
+import { AppDispatch, RootState } from '../../../store/store';
+import { fetchAllItems } from '../../../api/itemsThunk';
 
 export const MainPage = () => {
-  const dispatch = useDispatch();
-  const items = useSelector((state: RootState) => state.items);
+  const dispatch = useDispatch<AppDispatch>();
+  const itemsObj = useSelector((state: RootState) => state.itemsObject);
 
-  console.log(items.items);
+  useEffect(() => {
+    dispatch(fetchAllItems());
+  }, []);
+
+  console.log(itemsObj);
+
+  if (itemsObj.loading) return <div>Loading...</div>;
+  if (itemsObj.error) return <div>Error Fetching: {itemsObj.error}</div>;
 
   return (
     <>
       <pre>Main Page</pre>
-      <button
-        onClick={() => dispatch(addItem({ id: 'eni', name: 'duka' }))}
-      ></button>
+      <button></button>
     </>
   );
 };
