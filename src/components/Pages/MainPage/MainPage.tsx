@@ -1,17 +1,17 @@
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 import { AppDispatch, RootState } from '../../../store/store';
 import { fetchAllItems } from '../../../api/itemsThunk';
-import { updateLocalStorageActiveItem } from '../../../helpers';
-import { setActiveItem } from '../../../store/itemSlice';
+import { CustomCard } from '../../Molecules/CustomCard';
 
 export const MainPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const itemsObj = useSelector((state: RootState) => state.itemsObject);
-  const navigate = useNavigate();
 
   const itemsObjectData = itemsObj.itemsData;
   const activeItemId = itemsObj.activeItemId;
@@ -24,7 +24,7 @@ export const MainPage = () => {
         key,
         ...value,
       }))
-      .sort((a, b) => a.index - b.index); // Sort by ascending order of index
+      .sort((a, b) => a.index - b.index); // Sort by ascending order of index as as task requirement
 
     return sortedItems;
   }, [itemsObjectData, activeItemId]);
@@ -36,34 +36,56 @@ export const MainPage = () => {
   if (itemsObj.loading) return <div>Loading...</div>;
   if (itemsObj.error) return <div>Error Fetching: {itemsObj.error}</div>;
 
-  console.log(itemsObj);
-
-  const handleClick = (key: string) => {
-    dispatch(setActiveItem(key));
-    updateLocalStorageActiveItem(key);
-    navigate(`/itemPage/${key}`);
-  };
+  console.log('itemsobj main page', itemsObj);
 
   return (
     <>
-      <pre>Main Page</pre>
-      <div style={{ display: 'flex' }}>
-        {itemsArraySorted.map((item) => (
-          <div
-            onClick={() => handleClick(item.key)}
-            style={{
-              backgroundColor: 'blue',
-              width: '200px',
-              margin: '2px',
-              border: item.active ? '2px solid red' : '',
-            }}
-            key={item.key}
-          >
-            <p>{item.title}</p>
-            <pre>{item.active ? 'active' : 'false'}</pre>
-          </div>
-        ))}
-      </div>
+      <h1 style={{ textAlign: 'center', marginBottom: '100px' }}>Main Page</h1>
+
+      <Swiper
+        modules={[Pagination]}
+        pagination={{ clickable: true }}
+        spaceBetween={0}
+        scrollbar={{ draggable: true }}
+        breakpoints={{
+          // when window width is >= 620px, etc
+          620: {
+            slidesPerView: 2,
+          },
+
+          940: {
+            slidesPerView: 3,
+          },
+
+          1250: {
+            slidesPerView: 4,
+          },
+
+          1500: {
+            slidesPerView: 5,
+          },
+          1800: {
+            slidesPerView: 6,
+          },
+          2200: {
+            slidesPerView: 7,
+          },
+        }}
+      >
+        {itemsArraySorted.map((item) => {
+          return (
+            <SwiperSlide
+              key={item.key}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <CustomCard item={item} idKey={item.key} />
+            </SwiperSlide>
+          );
+        })}
+      </Swiper>
     </>
   );
 };

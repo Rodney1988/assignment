@@ -38,7 +38,8 @@ const itemsSlice = createSlice({
       }
     },
   },
-  //extraReducres allows .addCase to handle the fetchAllItems async Thunk created with createAsyncThunk
+  // Note: extraReducres allows .addCase to handle the fetchAllItems async
+  // Thunk created with createAsyncThunk (adjust thunk lifecycle)
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllItems.pending, (state) => {

@@ -15,7 +15,10 @@
       "removeComments": true,
       "preserveConstEnums": true,
       "declaration": false,
-      "allowSyntheticDefaultImports": true
+      "allowSyntheticDefaultImports": true,
+      "lib": ["es6", "dom"],
+      "noImplicitThis": true,
+      "strictNullChecks": true
     },
     "include": ["src"],
     "exclude": ["node_modules"]

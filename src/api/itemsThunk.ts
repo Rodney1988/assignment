@@ -29,25 +29,23 @@ export const fetchAllItems = createAsyncThunk<
 
     const data = await response.json();
 
-    // Add active property default to FALSE to API response
-    // Initialize an empty object to store the items with active attributes
-    const itemsWithActiveAttributes: ApiResponse = {};
-
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        // Ensure the key is actually a property of `data`
+    // Map over the fetched data to add 'active' property with
+    // a default value of false
+    const itemsWithActive: ApiResponse = Object.keys(data).reduce(
+      (acc, key) => {
         const item = data[key] as Item;
-        itemsWithActiveAttributes[key] = { ...item, active: false };
-      }
-    }
+        acc[key] = { ...item, active: false };
+        return acc;
+      },
+      {} as ApiResponse
+    );
 
-    setCacheData('localStorage', itemsWithActiveAttributes); // Cache the data
-    return itemsWithActiveAttributes as ApiResponse;
+    setCacheData('localStorage', itemsWithActive); // Cache the data
+    return itemsWithActive as ApiResponse;
   } catch (error) {
     // Fetching from API failed, attempt to use cached data
     const cachedData = getCachedData<ApiResponse>('localStorage');
     if (cachedData) {
-      console.log('Using cached data:', cachedData);
       return cachedData; // Return cached data if available
     }
 
