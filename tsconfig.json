@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      "jsx": "react-jsx",
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "strict": true,
+      "module": "esnext",
+      "moduleResolution": "node",
+      "target": "es5",
+      "forceConsistentCasingInFileNames": true,
+      "noImplicitReturns": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noImplicitAny": true,
+      "removeComments": true,
+      "preserveConstEnums": true,
+      "declaration": false,
+      "allowSyntheticDefaultImports": true
+    },
+    "include": ["src"],
+    "exclude": ["node_modules"]
+  }
+  
