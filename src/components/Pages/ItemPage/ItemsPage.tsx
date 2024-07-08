@@ -1,3 +1,12 @@
+import { useNavigate } from 'react-router-dom';
+
 export const ItemPage: React.FC = () => {
-  return <pre>Item Page</pre>;
+  const navigate = useNavigate();
+
+  return (
+    <div>
+      <pre>Item Page</pre>
+      <button onClick={() => navigate(-1)}>Back</button>
+    </div>
+  );
 };

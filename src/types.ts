@@ -3,6 +3,7 @@ export interface Item {
   description: string;
   image: string;
   index: number;
+  active: boolean;
 }
 
 export interface ApiResponse {

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ApiResponse, ErrorResponse } from '../types';
+import { ApiResponse, ErrorResponse, Item } from '../types';
 
 // Helper functions for caching
 const setCacheData = <T extends object>(key: string, data: T) => {
@@ -22,14 +22,27 @@ export const fetchAllItems = createAsyncThunk<
   // Always fetch from API first
   try {
     const response = await fetch(url, { method: 'GET' });
-    const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error || 'Failed to fetch items');
+      throw new Error('Failed to fetch items');
     }
 
-    setCacheData('localStorage', data); // Cache the data
-    return data;
+    const data = await response.json();
+
+    // Add active property default to FALSE to API response
+    // Initialize an empty object to store the items with active attributes
+    const itemsWithActiveAttributes: ApiResponse = {};
+
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        // Ensure the key is actually a property of `data`
+        const item = data[key] as Item;
+        itemsWithActiveAttributes[key] = { ...item, active: false };
+      }
+    }
+
+    setCacheData('localStorage', itemsWithActiveAttributes); // Cache the data
+    return itemsWithActiveAttributes as ApiResponse;
   } catch (error) {
     // Fetching from API failed, attempt to use cached data
     const cachedData = getCachedData<ApiResponse>('localStorage');

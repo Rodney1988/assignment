@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { ApiResponse } from '../types';
 import { fetchAllItems } from '../api/itemsThunk';
 
@@ -6,18 +6,38 @@ interface ItemsState {
   itemsData: ApiResponse | null;
   loading: boolean;
   error: string | null;
+  activeItemId: string | null;
 }
 
 const initialState: ItemsState = {
-  itemsData: null,
+  itemsData: {},
   loading: false,
   error: null,
+  activeItemId: null,
 };
 
 const itemsSlice = createSlice({
   name: 'items',
   initialState,
-  reducers: {},
+  reducers: {
+    setActiveItem: (state, action: PayloadAction<string>) => {
+      const itemKey = action.payload;
+
+      // Ensure itemsData is not null
+      if (state.itemsData) {
+        // Clear previous active item if any
+        if (state.activeItemId && state.itemsData[state.activeItemId]) {
+          state.itemsData[state.activeItemId].active = false;
+        }
+
+        // Set new active item
+        if (state.itemsData[itemKey]) {
+          state.itemsData[itemKey].active = true;
+          state.activeItemId = itemKey;
+        }
+      }
+    },
+  },
   //extraReducres allows .addCase to handle the fetchAllItems async Thunk created with createAsyncThunk
   extraReducers: (builder) => {
     builder
@@ -35,5 +55,7 @@ const itemsSlice = createSlice({
       });
   },
 });
+
+export const { setActiveItem } = itemsSlice.actions;
 
 export default itemsSlice.reducer;
