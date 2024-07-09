@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 import fallbackImage from '../../images/fallback_image.png';
 import { RootState } from '../../store/store';
-import { Item } from '../../types';
+import { getItemDetails } from '../../helpers/helpers';
 
 export const CustomDetailCard: React.FC = () => {
   const itemsData = useSelector(
@@ -16,19 +16,8 @@ export const CustomDetailCard: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   // Function to retrieve item details with priority to itemsData, fallback to localStorage
-  const getItemDetails = (): Item | null => {
-    if (itemsData && id && itemsData[id]) {
-      return itemsData[id];
-    } else {
-      const storedItemsData = localStorage.getItem('localStorage');
-      if (storedItemsData && id) {
-        const parsedItemsData = JSON.parse(storedItemsData);
-        return parsedItemsData[id] || null;
-      }
-    }
-    return null;
-  };
-  const item = getItemDetails();
+
+  const item = getItemDetails(itemsData, id);
   const [imgSrc, setImgSrc] = useState(item?.image || fallbackImage);
 
   if (!item) {

@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 import { setActiveItem } from '../../store/itemSlice';
 import { Item } from '../../types';
-import { updateLocalStorageActiveItem } from '../../helpers';
+import { updateLocalStorageActiveItem } from '../../helpers/helpers';
 import { AppDispatch } from '../../store/store';
 import fallbackImage from '../../images/fallback_image.png';
 
