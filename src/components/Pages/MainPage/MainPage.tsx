@@ -36,8 +36,6 @@ export const MainPage = () => {
   if (itemsObj.loading) return <div>Loading...</div>;
   if (itemsObj.error) return <div>Error Fetching: {itemsObj.error}</div>;
 
-  console.log('itemsobj main page', itemsObj);
-
   return (
     <>
       <h1 style={{ textAlign: 'center', marginBottom: '100px' }}>Main Page</h1>

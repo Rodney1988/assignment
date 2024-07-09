@@ -19,36 +19,52 @@ export const fetchAllItems = createAsyncThunk<
 >('items/fetchAll', async (_, { rejectWithValue }) => {
   const url = 'http://54.73.73.228:4369/api/images';
 
-  // Always fetch from API first
   try {
     const response = await fetch(url, { method: 'GET' });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch items');
-    }
-
     const data = await response.json();
 
-    // Map over the fetched data to add 'active' property with
-    // a default value of false
-    const itemsWithActive: ApiResponse = Object.keys(data).reduce(
-      (acc, key) => {
-        const item = data[key] as Item;
-        acc[key] = { ...item, active: false };
-        return acc;
-      },
-      {} as ApiResponse
-    );
+    if (!response.ok) {
+      const errorMessage = data?.error || 'Failed to fetch items';
+      throw new Error(errorMessage);
+    }
 
-    setCacheData('localStorage', itemsWithActive); // Cache the data
-    return itemsWithActive as ApiResponse;
+    // Initialize an empty object to store the items with active attributes
+    const itemsWithActiveAttributes: ApiResponse = {};
+
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        const item = data[key] as Item;
+        itemsWithActiveAttributes[key] = { ...item, active: false };
+      }
+    }
+
+    // cacheData used later to merge cachedData with the redux store, if cachedData exists
+    const cachedData = getCachedData<ApiResponse>('localStorage');
+
+    // If cachedData exists, merge to the store, else just set redux store data + cache it
+    let mergedItems: ApiResponse;
+
+    if (cachedData) {
+      mergedItems = { ...itemsWithActiveAttributes };
+
+      for (const key of Object.keys(itemsWithActiveAttributes)) {
+        mergedItems[key] = {
+          ...itemsWithActiveAttributes[key],
+          active: cachedData[key]?.active || false,
+        };
+      }
+    } else {
+      mergedItems = itemsWithActiveAttributes;
+    }
+    setCacheData('localStorage', mergedItems); // Cache the merged data
+    return mergedItems;
   } catch (error) {
     // Fetching from API failed, attempt to use cached data
     const cachedData = getCachedData<ApiResponse>('localStorage');
     if (cachedData) {
+      console.log('returning cached data', cachedData);
       return cachedData; // Return cached data if available
     }
-
     // If no cached data and API request fails, reject with error
     return rejectWithValue({ error: (error as Error).message });
   }
