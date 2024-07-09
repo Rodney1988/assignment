@@ -7,13 +7,14 @@ import {
   mergeCachedWithActiveAtts,
   setCacheData,
 } from './itemsThunkHelpers';
+import { setSnackbarString } from '../store/itemSlice';
 
 /* createAsyncThunk that handles fetching and caching */
 export const fetchAllItems = createAsyncThunk<
   ApiResponse,
   void,
   { rejectValue: ErrorResponse }
->('items/fetchAll', async (_, { rejectWithValue }) => {
+>('items/fetchAll', async (_, { rejectWithValue, dispatch }) => {
   const url = 'http://54.73.73.228:4369/api/images';
 
   try {
@@ -44,7 +45,9 @@ export const fetchAllItems = createAsyncThunk<
     // Fetching from API failed, attempt to return cached data
     const cachedData = getCachedData<ApiResponse>('localStorage');
     if (cachedData) {
-      console.log('returning cached data', cachedData);
+      dispatch(
+        setSnackbarString('Failed to fetch items, rendering cached data')
+      );
       return cachedData;
     }
     // If no cached data and API request fails, reject with error

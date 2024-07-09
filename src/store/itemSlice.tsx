@@ -7,6 +7,7 @@ interface ItemsState {
   loading: boolean;
   error: string | null;
   activeItemId: string | null;
+  snackbarString: string;
 }
 
 const initialState: ItemsState = {
@@ -14,6 +15,7 @@ const initialState: ItemsState = {
   loading: false,
   error: null,
   activeItemId: null,
+  snackbarString: '',
 };
 
 const itemsSlice = createSlice({
@@ -37,6 +39,9 @@ const itemsSlice = createSlice({
         }
       }
     },
+    setSnackbarString: (state, action: PayloadAction<string>) => {
+      state.snackbarString = action.payload;
+    },
   },
   // Note: extraReducres allows .addCase to handle the fetchAllItems async
   // Thunk created with createAsyncThunk (adjust thunk lifecycle)
@@ -57,6 +62,6 @@ const itemsSlice = createSlice({
   },
 });
 
-export const { setActiveItem } = itemsSlice.actions;
+export const { setActiveItem, setSnackbarString } = itemsSlice.actions;
 
 export default itemsSlice.reducer;

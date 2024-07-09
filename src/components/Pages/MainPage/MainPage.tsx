@@ -2,17 +2,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
+import Snackbar from '@mui/material/Snackbar';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
 import { AppDispatch, RootState } from '../../../store/store';
 import { fetchAllItems } from '../../../api/itemsThunk';
 import { CustomCard } from '../../Molecules/CustomCard';
+import { setSnackbarString } from '../../../store/itemSlice';
 
 export const MainPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const itemsObj = useSelector((state: RootState) => state.itemsObject);
-  const { itemsData: itemsObjectData, activeItemId } = itemsObj;
+  const { itemsData: itemsObjectData, activeItemId, snackbarString } = itemsObj;
 
   // Transform itemsObjectData into an array of objects
   const itemsArraySorted = useMemo(() => {
@@ -34,6 +36,10 @@ export const MainPage = () => {
 
   if (itemsObj.loading) return <div>Loading...</div>;
   if (itemsObj.error) return <div>Error Fetching: {itemsObj.error}</div>;
+
+  const handleSnackbarClose = () => {
+    dispatch(setSnackbarString(''));
+  };
 
   return (
     <>
@@ -83,6 +89,13 @@ export const MainPage = () => {
           );
         })}
       </Swiper>
+      <Snackbar
+        open={!!snackbarString}
+        autoHideDuration={2500}
+        onClose={handleSnackbarClose}
+        message={snackbarString}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      />
     </>
   );
 };
