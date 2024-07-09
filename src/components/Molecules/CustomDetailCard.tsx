@@ -9,6 +9,8 @@ import fallbackImage from '../../images/fallback_image.png';
 import { RootState } from '../../store/store';
 import { getItemDetails } from '../../helpers/helpers';
 
+/* CustomDetailCard is a generic component that will retrieve dynamic details from Redux's state */
+
 export const CustomDetailCard: React.FC = () => {
   const itemsData = useSelector(
     (state: RootState) => state.itemsObject.itemsData

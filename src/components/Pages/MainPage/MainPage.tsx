@@ -29,7 +29,7 @@ export const MainPage = () => {
     return sortedItems;
   }, [itemsObjectData, activeItemId]);
 
-  // fetch all Items on load
+  // fetch all items on load
   useEffect(() => {
     dispatch(fetchAllItems());
   }, []);

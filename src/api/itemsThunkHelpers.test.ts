@@ -97,6 +97,7 @@ describe('addActiveAttributes(data)', () => {
     // Clear localStorage mock before each test
     localStorage.clear();
   });
+
   it('should add active attributes to each item with a default value of false', () => {
     // Arrange
     const testData = {
@@ -133,6 +134,7 @@ describe('mergeCachedWithActiveAtts(itemsWithActiveAttributes, cachedData)', () 
     // Clear localStorage mock before each test
     localStorage.clear();
   });
+
   it('should merge cached data with active attributes data correctly', () => {
     // Arrange
     const itemsWithActiveAttributes = {

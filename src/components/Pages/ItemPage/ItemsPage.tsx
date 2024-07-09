@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { CustomDetailCard } from '../../Molecules/CustomDetailCard';
 
+/* ItemPage uses a generic "customDetailCard" and puts a "Go Home" button below */
+
 export const ItemPage: React.FC = () => {
   const navigate = useNavigate();
 
@@ -21,7 +23,7 @@ export const ItemPage: React.FC = () => {
         <Button
           variant="contained"
           sx={{ textAlign: 'center' }}
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/')}
         >
           Go Home
         </Button>

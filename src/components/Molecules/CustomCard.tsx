@@ -18,6 +18,8 @@ interface CustomCardProps {
   idKey: string;
 }
 
+/* CustomCards are displayed in main page by Swiper carousel */
+
 export const CustomCard: React.FC<CustomCardProps> = ({
   item: { title, description, image, active },
   idKey,

@@ -22,6 +22,7 @@ const itemsSlice = createSlice({
   name: 'items',
   initialState,
   reducers: {
+    // To be used on the CustomCard to set a specific item to "active"
     setActiveItem: (state, action: PayloadAction<string>) => {
       const itemKey = action.payload;
 
@@ -39,11 +40,12 @@ const itemsSlice = createSlice({
         }
       }
     },
+    // To be used in the itemsThunk api method, sets message for snackbar
     setSnackbarString: (state, action: PayloadAction<string>) => {
       state.snackbarString = action.payload;
     },
   },
-  // Note: extraReducres allows .addCase to handle the fetchAllItems async
+  // Note to self: extraReducers allows .addCase to handle the fetchAllItems async
   // Thunk created with createAsyncThunk (adjust thunk lifecycle)
   extraReducers: (builder) => {
     builder
