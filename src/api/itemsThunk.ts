@@ -1,17 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ApiResponse, ErrorResponse, Item } from '../types';
+import { getCachedData, setCacheData } from '../helpers';
 
-// Helper functions for caching
-const setCacheData = <T extends object>(key: string, data: T) => {
-  localStorage.setItem(key, JSON.stringify(data));
-};
-
-const getCachedData = <T extends object>(key: string): T | null => {
-  const cached = localStorage.getItem(key);
-  return cached ? (JSON.parse(cached) as T) : null;
-};
-
-// createAsyncThunk that handles fetching and caching
+/* createAsyncThunk that handles fetching and caching */
 export const fetchAllItems = createAsyncThunk<
   ApiResponse,
   void,
