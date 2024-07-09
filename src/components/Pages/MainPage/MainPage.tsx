@@ -12,9 +12,7 @@ import { CustomCard } from '../../Molecules/CustomCard';
 export const MainPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const itemsObj = useSelector((state: RootState) => state.itemsObject);
-
-  const itemsObjectData = itemsObj.itemsData;
-  const activeItemId = itemsObj.activeItemId;
+  const { itemsData: itemsObjectData, activeItemId } = itemsObj;
 
   // Transform itemsObjectData into an array of objects
   const itemsArraySorted = useMemo(() => {
@@ -29,6 +27,7 @@ export const MainPage = () => {
     return sortedItems;
   }, [itemsObjectData, activeItemId]);
 
+  // fetch all Items on load
   useEffect(() => {
     dispatch(fetchAllItems());
   }, []);
