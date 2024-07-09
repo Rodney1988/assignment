@@ -9,3 +9,17 @@
     position: relative !important;
     margin-top: 100px;
 }
+
+/* bounce effect on active CustomCards */
+.active {
+    animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0); /* Initial and final position */
+    }
+    50% {
+        transform: translateY(-5px); /* Bounce up */
+    }
+}

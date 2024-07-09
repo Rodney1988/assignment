@@ -33,8 +33,11 @@ export const CustomCard: React.FC<CustomCardProps> = ({
   };
   return (
     <Card
+      className={active ? 'active' : ''}
       sx={{
-        width: 275,
+        marginTop: '20px',
+        marginBottom: '20px',
+        width: '275px',
         border: active ? '3px solid red' : '',
         cursor: 'grab',
       }}
